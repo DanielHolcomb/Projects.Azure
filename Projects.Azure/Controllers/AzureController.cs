@@ -50,5 +50,22 @@ namespace Projects.Azure.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("Resources/Sites/{resourceGroupName}")]
+        [Authorize]
+        public async Task<IActionResult> GetWebsites(string resourceGroupName)
+        {
+            try
+            {
+                var response = await _azureService.GetAllWebSites(resourceGroupName);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using Azure.ResourceManager;
 using Azure.ResourceManager.Resources;
 using Projects.Azure.Interfaces;
 using Projects.Azure.Models;
+using Azure.ResourceManager.AppService;
 
 namespace Projects.Azure.Services
 {
@@ -38,19 +39,47 @@ namespace Projects.Azure.Services
             ResourceGroupResource resourceGroupResource =
                 _armClient.GetDefaultSubscription().GetResourceGroup(resourceGroupName);
 
-            var resourecesPageable = resourceGroupResource.GetGenericResourcesAsync();
+            var resourcesPageable = resourceGroupResource.GetGenericResourcesAsync();
 
             List<AzureResource?> resources = new List<AzureResource?>();
-            await foreach(var resource in resourecesPageable)
+            await foreach(var resource in resourcesPageable)
             {
                 var azureResource = new AzureResource()
                 {
-                    Name = resource.Data.Name
+                    Name = resource.Data.Name,
+                    Type = resource.Data.ResourceType.Type,
+                    NameSpace = resource.Data.ResourceType.Namespace
                 };
                 resources.Add(azureResource);
             }
 
             return resources;
         }
+
+        public async Task<List<AzureWebSite?>> GetAllWebSites(string resourceGroupName)
+        {
+            ResourceGroupResource resourceGroupResource =
+                _armClient.GetDefaultSubscription().GetResourceGroup(resourceGroupName);
+
+            var websites = resourceGroupResource.GetWebSites();
+
+            List<AzureWebSite?> resources = new List<AzureWebSite?>();
+            await foreach (var site in websites)
+            {
+                var repo = site.GetWebSiteSourceControl().Get().Value.Data;
+                var azureResource = new AzureWebSite()
+                {
+                    Name = site.Data.Name,
+                    Type = site.Data.ResourceType.Type,
+                    NameSpace = site.Data.ResourceType.Namespace,
+                    RepoUri = repo.RepoUri
+            };
+
+                resources.Add(azureResource);
+            }
+
+            return resources;
+        }
+
     }
 }

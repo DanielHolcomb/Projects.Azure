@@ -7,5 +7,6 @@ namespace Projects.Azure.Interfaces
     {
         public List<AzureResourceGroup> GetAllResourceGroups();
         public Task<List<AzureResource?>> GetAllResources(string resourceGroupName);
+        public Task<List<AzureWebSite?>> GetAllWebSites(string resourceGroupName);
     }
 }
