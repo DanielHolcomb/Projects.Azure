@@ -2,6 +2,7 @@
 {
     public class AzureWebSite:AzureResource
     {
-        public Uri RepoUri { get; set; }
+        public string RepoUri { get; set; }
+        public string RepoPath { get; set; }
     }
 }

@@ -72,7 +72,8 @@ namespace Projects.Azure.Services
                     Name = site.Data.Name,
                     Type = site.Data.ResourceType.Type,
                     NameSpace = site.Data.ResourceType.Namespace,
-                    RepoUri = repo.RepoUri
+                    RepoUri = repo.RepoUri.ToString(),
+                    RepoPath = repo.RepoUri.AbsolutePath
             };
 
                 resources.Add(azureResource);
