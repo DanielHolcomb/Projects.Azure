@@ -10,10 +10,9 @@ namespace Projects.Azure.Services
     public class AzureService: IAzureService
     {
         private readonly ArmClient _armClient;
-
-        public AzureService()
+        public AzureService(IConfiguration configuration)
         {
-            _armClient = new ArmClient(new DefaultAzureCredential());
+            _armClient = new ArmClient(new DefaultAzureCredential(), configuration.GetSection("Azure:SubscriptionId").Value);
         }
 
         public List<AzureResourceGroup> GetAllResourceGroups()
