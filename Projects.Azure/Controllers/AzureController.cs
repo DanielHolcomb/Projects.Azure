@@ -23,8 +23,15 @@ namespace Projects.Azure.Controllers
         [Authorize]
         public  IActionResult GetResourceGroups()
         {
-            var response = _azureService.GetAllResourceGroups();
-            return Ok(response);
+            try
+            {
+                var response = _azureService.GetAllResourceGroups();
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
@@ -32,8 +39,15 @@ namespace Projects.Azure.Controllers
         [Authorize]
         public async Task<IActionResult> GetResources(string resourceGroupName)
         {
-            var response = await _azureService.GetAllResources(resourceGroupName);
-            return Ok(response);
+            try
+            {
+                var response = await _azureService.GetAllResources(resourceGroupName);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
