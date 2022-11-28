@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddJwtBuilderAuthentication(builder.Configuration);
 builder.Services.AddScoped<IAzureService, AzureService>();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
