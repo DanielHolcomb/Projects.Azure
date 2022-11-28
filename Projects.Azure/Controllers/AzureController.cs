@@ -27,8 +27,8 @@ namespace Projects.Azure.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{resourceGroupName}")]
-        [Route("Resources")]
+        [HttpGet]
+        [Route("Resources/{resourceGroupName}")]
         [Authorize]
         public async Task<IActionResult> GetResources(string resourceGroupName)
         {
