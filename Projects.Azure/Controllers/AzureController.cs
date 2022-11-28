@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Projects.Azure.Interfaces;
 
 namespace Projects.Azure.Controllers
 {
@@ -8,16 +10,30 @@ namespace Projects.Azure.Controllers
     {
 
         private readonly ILogger<AzureController> _logger;
+        private readonly IAzureService _azureService;
 
-        public AzureController(ILogger<AzureController> logger)
+        public AzureController(ILogger<AzureController> logger, IAzureService azureService)
         {
             _logger = logger;
+            _azureService = azureService;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IActionResult Get()
+        [HttpGet]
+        [Route("Resource/Groups")]
+        [Authorize]
+        public  IActionResult GetResourceGroups()
         {
-            return Ok();
+            var response = _azureService.GetAllResourceGroups();
+            return Ok(response);
+        }
+
+        [HttpGet("{resourceGroupName}")]
+        [Route("Resources")]
+        [Authorize]
+        public async Task<IActionResult> GetResources(string resourceGroupName)
+        {
+            var response = await _azureService.GetAllResources(resourceGroupName);
+            return Ok(response);
         }
     }
 }
