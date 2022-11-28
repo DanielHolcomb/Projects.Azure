@@ -1,4 +1,5 @@
-﻿using Azure.Identity;
+﻿using Azure.Core;
+using Azure.Identity;
 using Azure.ResourceManager;
 using Azure.ResourceManager.Resources;
 using Projects.Azure.Interfaces;
@@ -17,8 +18,7 @@ namespace Projects.Azure.Services
 
         public List<AzureResourceGroup> GetAllResourceGroups()
         {
-            SubscriptionResource subscription = _armClient.GetDefaultSubscription();
-            var resourceGroupCollection = subscription.GetResourceGroups();
+            var resourceGroupCollection = _armClient.GetDefaultSubscription().GetResourceGroups();
 
             var resourceGroups = new List<AzureResourceGroup>();
 

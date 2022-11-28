@@ -46,6 +46,7 @@ namespace Projects.Azure.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.ToString());
                 return BadRequest(ex.Message);
             }
         }
