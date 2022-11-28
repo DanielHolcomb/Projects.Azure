@@ -66,17 +66,19 @@ namespace Projects.Azure.Services
             List<AzureWebSite?> resources = new List<AzureWebSite?>();
             await foreach (var site in websites)
             {
-                var repo = site.GetWebSiteSourceControl().Get().Value.Data;
-                var azureResource = new AzureWebSite()
+                var repo = site.GetWebSiteSourceControl()?.Get()?.Value?.Data;
+                if (repo?.RepoUri?.AbsolutePath != null)
                 {
-                    Name = site.Data.Name,
-                    Type = site.Data.ResourceType.Type,
-                    NameSpace = site.Data.ResourceType.Namespace,
-                    RepoUri = repo.RepoUri.ToString(),
-                    RepoPath = repo.RepoUri.AbsolutePath
-            };
-
-                resources.Add(azureResource);
+                    var azureResource = new AzureWebSite()
+                    {
+                        Name = site.Data.Name,
+                        Type = site.Data.ResourceType.Type,
+                        NameSpace = site.Data.ResourceType.Namespace,
+                        RepoUri = repo.RepoUri.ToString(),
+                        RepoPath = repo.RepoUri.AbsolutePath
+                    };
+                    resources.Add(azureResource);
+                }
             }
 
             return resources;
